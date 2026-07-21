@@ -27,7 +27,7 @@ export const siteConfig: SiteConfig = {
     jobTitle: "Backend Yazılım Geliştirici",
   },
   comments: {
-    shortname: "erhanbte",
+    shortname: "erhanbute",
   },
   // Uncomment to enable analytics. Both providers load via Partytown.
   // analytics: {

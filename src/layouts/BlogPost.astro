@@ -970,7 +970,7 @@ const localizedReadingTime = readingTime.replace("min read", "dk okuma");
 </style>
 
 {comments && (
-	<script is:inline define:vars={{ comments, postUrl, slug, title }}>
+	<script is:inline define:vars={{ comments, postUrl, slug }}>
 		document.addEventListener("DOMContentLoaded", () => {
 			const mount = document.getElementById("disqus_thread");
 			if (!mount) return;
@@ -981,7 +981,6 @@ const localizedReadingTime = readingTime.replace("min read", "dk okuma");
 				window.disqus_config = function () {
 					this.page.url = postUrl;
 					this.page.identifier = `post:${slug}`;
-					this.page.title = title;
 				};
 				const script = document.createElement("script");
 				script.src = `https://${comments.shortname}.disqus.com/embed.js`;
