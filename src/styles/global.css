@@ -54,8 +54,8 @@
     --python-yellow: #c94c2d;
     --accent-soft: rgba(201, 76, 45, 0.13);
     --accent-soft-strong: rgba(201, 76, 45, 0.24);
-    --olive: #48543a;
-    --olive-ink: #f1eadc;
+    --repo-surface: #d8cbb5;
+    --repo-ink: #28231d;
     --paper-texture: radial-gradient(
       circle at 1px 1px,
       rgba(23, 23, 17, 0.025) 0.7px,
@@ -86,8 +86,8 @@
     --python-yellow: #e9754f;
     --accent-soft: rgba(233, 117, 79, 0.12);
     --accent-soft-strong: rgba(233, 117, 79, 0.22);
-    --olive: #343c2e;
-    --olive-ink: #eee6d7;
+    --repo-surface: #343c2e;
+    --repo-ink: #eee6d7;
     --paper-texture: radial-gradient(
       circle at 1px 1px,
       rgba(238, 230, 215, 0.025) 0.7px,
