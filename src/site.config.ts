@@ -26,13 +26,9 @@ export const siteConfig: SiteConfig = {
     instagram: "https://www.instagram.com/erhanbt/",
     jobTitle: "Backend Yazılım Geliştirici",
   },
-  // Uncomment & fill in to enable Giscus comments on every post.
-  // comments: {
-  // 	repo: "your-handle/your-repo",
-  // 	repoId: "...",
-  // 	category: "General",
-  // 	categoryId: "...",
-  // },
+  comments: {
+    shortname: "erhanbte",
+  },
   // Uncomment to enable analytics. Both providers load via Partytown.
   // analytics: {
   // 	googleAnalyticsId: "G-XXXXXXX",

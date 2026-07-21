@@ -46,13 +46,6 @@ const readingTime: string =
 	(remarkPluginFrontmatter as { minutesRead?: string })?.minutesRead ?? "";
 const localizedReadingTime = readingTime.replace("min read", "dk okuma");
 
-// Custom giscus themes only in prod: the giscus.app iframe can't fetch CSS from localhost / private IPs.
-const giscusThemes = import.meta.env.PROD
-	? {
-			light: new URL("/giscus-light.css", Astro.site).toString(),
-			dark: new URL("/giscus-dark.css", Astro.site).toString(),
-		}
-	: { light: "noborder_light", dark: "noborder_dark" };
 ---
 
 <Schema
@@ -165,7 +158,20 @@ const giscusThemes = import.meta.env.PROD
 				</nav>
 			)}
 
-			{comments && <div class="comments" id="comments"></div>}
+			{comments && (
+				<section class="comments" aria-labelledby="comments-title">
+					<div class="comments-head">
+						<span class="comments-kicker">Sohbete katıl</span>
+						<h2 id="comments-title">Yorumlar</h2>
+					</div>
+					<div id="disqus_thread" aria-live="polite">
+						<p class="comments-loading" id="comments-loading">Yorumlar yükleniyor…</p>
+					</div>
+					<noscript>
+						Yorumları görmek için JavaScript’i etkinleştirmen gerekiyor.
+					</noscript>
+				</section>
+			)}
 		</div>
 	</div>
 
@@ -395,8 +401,40 @@ const giscusThemes = import.meta.env.PROD
 	}
 
 	/* Match article body width */
-	.comments { max-width: var(--reading-width); margin: 56px 0 32px; }
-	.comments .giscus { max-width: 100%; }
+	.comments {
+		max-width: var(--reading-width);
+		margin: 64px 0 32px;
+		padding-top: 24px;
+		border-top: 1px solid var(--hairline);
+	}
+	.comments-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 24px;
+		margin-bottom: 28px;
+	}
+	.comments-kicker,
+	.comments-loading,
+	.comments noscript {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: hsl(var(--theme-text-muted));
+	}
+	.comments h2 {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: 30px;
+		font-weight: 400;
+		line-height: 1;
+		letter-spacing: -0.035em;
+	}
+	.comments-loading {
+		margin: 32px 0;
+		text-align: center;
+	}
 
 	/* Prev/Next post navigation */
 	.post-pager {
@@ -932,37 +970,42 @@ const giscusThemes = import.meta.env.PROD
 </style>
 
 {comments && (
-	<script is:inline define:vars={{ comments, giscusThemes }}>
+	<script is:inline define:vars={{ comments, postUrl, slug, title }}>
 		document.addEventListener("DOMContentLoaded", () => {
-			const mount = document.getElementById("comments");
+			const mount = document.getElementById("disqus_thread");
 			if (!mount) return;
-			const theme = document.documentElement.getAttribute("data-theme");
-			const script = document.createElement("script");
-			script.src = "https://giscus.app/client.js";
-			script.setAttribute("data-repo", comments.repo);
-			script.setAttribute("data-repo-id", comments.repoId);
-			script.setAttribute("data-category", comments.category);
-			script.setAttribute("data-category-id", comments.categoryId);
-			script.setAttribute("data-mapping", "title");
-			script.setAttribute("data-strict", "0");
-			script.setAttribute("data-reactions-enabled", "1");
-			script.setAttribute("data-emit-metadata", "0");
-			script.setAttribute("data-input-position", "top");
-			script.setAttribute("data-theme", theme === "dark" ? giscusThemes.dark : giscusThemes.light);
-			script.setAttribute("data-lang", "en");
-			script.setAttribute("crossorigin", "anonymous");
-			script.async = true;
-			mount.appendChild(script);
+			let loaded = false;
+			const loadDisqus = () => {
+				if (loaded) return;
+				loaded = true;
+				window.disqus_config = function () {
+					this.page.url = postUrl;
+					this.page.identifier = `post:${slug}`;
+					this.page.title = title;
+				};
+				const script = document.createElement("script");
+				script.src = `https://${comments.shortname}.disqus.com/embed.js`;
+				script.setAttribute("data-timestamp", String(Date.now()));
+				script.async = true;
+				script.addEventListener("load", () => {
+					document.getElementById("comments-loading")?.remove();
+				});
+				(document.head || document.body).appendChild(script);
+			};
 
-			document.addEventListener("theme-change", (e) => {
-				const iframe = document.querySelector("iframe.giscus-frame");
-				if (iframe && iframe.contentWindow) {
-					iframe.contentWindow.postMessage(
-						{ giscus: { setConfig: { theme: e.detail.theme === "dark" ? giscusThemes.dark : giscusThemes.light } } },
-						"https://giscus.app",
-					);
-				}
-			});
+			if (!("IntersectionObserver" in window)) {
+				loadDisqus();
+				return;
+			}
+			const observer = new IntersectionObserver(
+				(entries) => {
+					if (!entries.some((entry) => entry.isIntersecting)) return;
+					observer.disconnect();
+					loadDisqus();
+				},
+				{ rootMargin: "600px 0px" },
+			);
+			observer.observe(mount);
 		});
 	</script>
 )}

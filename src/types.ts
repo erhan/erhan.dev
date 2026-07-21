@@ -25,16 +25,10 @@ export interface ProfileConfig {
   avatar?: string;
 }
 
-/** Optional Giscus comment-widget config (https://giscus.app). */
+/** Optional Disqus comment-widget config (https://disqus.com). */
 export interface CommentsConfig {
-  /** GitHub repository hosting the discussions, e.g. "user/repo". */
-  repo: string;
-  /** GitHub repo node id (data-repo-id from the giscus wizard). */
-  repoId: string;
-  /** Discussion category name. */
-  category: string;
-  /** Discussion category id. */
-  categoryId: string;
+  /** Forum shortname registered in Disqus. */
+  shortname: string;
 }
 
 /** Optional analytics config — each provider is opt-in. */
@@ -59,7 +53,7 @@ export interface SiteConfig {
   title: string;
   /** Personal info for About page, schema, byline. */
   profile?: ProfileConfig;
-  /** Giscus comments; skipped if absent. */
+  /** Disqus comments; skipped if absent. */
   comments?: CommentsConfig;
   /** Analytics; each provider opt-in. */
   analytics?: AnalyticsConfig;
