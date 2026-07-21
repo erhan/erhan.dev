@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# local Codex Sites metadata
+.openai/
+
 # macOS-specific files
 .DS_Store
 

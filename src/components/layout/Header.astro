@@ -1,0 +1,223 @@
+---
+import { showcase } from "@/data/showcase";
+import { menuLinks, siteConfig } from "@/site-config";
+import { withBase } from "@/utils/path";
+import ThemeToggle from "../ThemeToggle.astro";
+
+const url = new URL(Astro.request.url);
+const wordmark = siteConfig.title;
+
+const visibleMenuLinks = menuLinks.filter((link) => {
+  if (link.path === "/showcase/" && showcase.length === 0) return false;
+  return true;
+});
+
+const isActive = (path: string) => {
+  const target = withBase(path);
+  if (path === "/") return url.pathname === target;
+  return url.pathname === target || url.pathname.startsWith(target);
+};
+
+const navIcons: Record<string, string> = {
+  "/": '<path d="M2.5 6.5 8 2l5.5 4.5V13a1 1 0 0 1-1 1h-2.5v-4h-4v4H3.5a1 1 0 0 1-1-1Z"/>',
+  "/posts/":
+    '<path d="M3 2.5h7l3 3V13a.5.5 0 0 1-.5.5h-9.5a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5Z"/><path d="M10 2.5V5.5h3"/><path d="M5.5 8.5h5"/><path d="M5.5 11h3.5"/>',
+  "/showcase/":
+    '<rect x="2" y="4.5" width="12" height="8.5" rx="1"/><path d="M5.5 4.5V3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v1.5"/>',
+  "/about/":
+    '<circle cx="8" cy="6" r="2.5"/><path d="M3 13c.6-2.4 2.6-3.5 5-3.5s4.4 1.1 5 3.5"/>',
+};
+---
+
+<header class="site-header" id="main-header">
+  <a href={withBase("/")} class="wordmark">
+    <span class="wordmark-mark" aria-hidden="true"></span>
+    <span class="wordmark-copy">
+      <span class="wordmark-name">{wordmark}</span>
+      <span class="wordmark-note">sahadan notlar.</span>
+    </span>
+  </a>
+  <div class="header-right">
+    <nav class="nav" aria-label="Ana menü">
+      {
+        visibleMenuLinks.map((link) => (
+          <a
+            aria-current={isActive(link.path) ? "page" : false}
+            class:list={[{ active: isActive(link.path) }]}
+            data-astro-prefetch
+            href={withBase(link.path)}
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              set:html={navIcons[link.path] ?? ""}
+            />
+            <span>{link.title}</span>
+          </a>
+        ))
+      }
+    </nav>
+    <ThemeToggle />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 72px;
+    margin-bottom: clamp(48px, 7vw, 104px);
+    border-top: 2px solid hsl(var(--theme-text));
+    border-bottom: 1px solid var(--hairline);
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    color: hsl(var(--theme-text));
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .wordmark:hover {
+    color: hsl(var(--theme-accent));
+  }
+  .wordmark-copy {
+    display: flex;
+    flex-direction: column;
+  }
+  .wordmark-name {
+    line-height: 1;
+  }
+  .wordmark-note {
+    margin-top: 4px;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0;
+    white-space: nowrap;
+    color: hsl(var(--theme-text-muted));
+    transition: color 0.2s ease;
+  }
+  .wordmark:hover .wordmark-note {
+    color: hsl(var(--theme-accent));
+  }
+  .wordmark-mark {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: hsl(var(--theme-accent));
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  .nav {
+    display: flex;
+    align-items: baseline;
+    gap: 28px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: hsl(var(--theme-text) / 0.72);
+  }
+  .nav a {
+    display: inline-block;
+    position: relative;
+    padding: 8px 0;
+    transition: color 0.2s ease;
+  }
+  /* Indicator overhangs the text slightly so the underline isn't abrupt. */
+  .nav a::after {
+    content: "";
+    position: absolute;
+    left: -3px;
+    right: -3px;
+    bottom: 2px;
+    height: 1px;
+    background: transparent;
+  }
+  .nav a svg {
+    display: none;
+  }
+  .nav a:hover {
+    color: hsl(var(--theme-accent));
+  }
+  .nav a.active {
+    color: hsl(var(--theme-text));
+  }
+  .nav a.active::after {
+    background: hsl(var(--theme-accent));
+  }
+
+  @media (max-width: 720px) {
+    .site-header {
+      margin-bottom: 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "wordmark theme"
+        "nav nav";
+      align-items: center;
+      column-gap: 14px;
+      row-gap: 6px;
+      padding: 14px 0 12px;
+    }
+    .wordmark {
+      grid-area: wordmark;
+    }
+    .header-right {
+      display: contents;
+    }
+    .theme-toggle {
+      grid-area: theme;
+      justify-self: end;
+    }
+    .nav {
+      grid-area: nav;
+      gap: 22px;
+      font-size: 11px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    .nav a {
+      /* Add top tap padding; desktop rule keeps the indicator space below. */
+      padding-top: 6px;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .site-header {
+      margin-bottom: 40px;
+      row-gap: 12px;
+    }
+    .wordmark {
+      font-size: 16px;
+    }
+    .nav {
+      gap: 18px;
+      font-size: 12.5px;
+    }
+    .nav a svg {
+      display: none;
+    }
+  }
+</style>

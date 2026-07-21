@@ -1,0 +1,195 @@
+---
+import { siteConfig } from "@/site-config";
+import { withBase } from "@/utils/path";
+import { Icon } from "astro-icon/components";
+
+const year = new Date().getFullYear();
+const profile = siteConfig.profile;
+const socialLinks = [
+  {
+    label: "GitHub",
+    href: profile?.github,
+    icon: "mdi:github",
+    external: true,
+  },
+  {
+    label: "LinkedIn",
+    href: profile?.linkedin,
+    icon: "mdi:linkedin",
+    external: true,
+  },
+  {
+    label: "X",
+    href: profile?.twitter,
+    icon: "mdi:alpha-x",
+    external: true,
+  },
+  {
+    label: "Instagram",
+    href: profile?.instagram,
+    icon: "mdi:instagram",
+    external: true,
+  },
+  {
+    label: "E-posta",
+    href: profile?.email ? `mailto:${profile.email}` : undefined,
+    icon: "mdi:email-outline",
+    external: false,
+  },
+  {
+    label: "RSS",
+    href: withBase("/rss.xml"),
+    icon: "mdi:rss",
+    external: false,
+  },
+].filter((link) => Boolean(link.href));
+---
+
+<footer class="site-footer">
+  <nav class="social-links" aria-label="Sosyal bağlantılar">
+    {
+      socialLinks.map((link) => (
+        <a
+          href={link.href}
+          rel={link.external ? "noreferrer" : undefined}
+          target={link.external ? "_blank" : undefined}
+        >
+          <Icon
+            aria-hidden="true"
+            class="social-icon"
+            focusable="false"
+            name={link.icon}
+          />
+          <span>{link.label}</span>
+          <span class="social-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="footer-meta">
+    <div class="left">
+      <span>&copy; {siteConfig.author}</span>
+      <span class="footer-sep" aria-hidden="true">·</span>
+      <span class="footer-note">sahadan notlar.</span>
+      <span class="footer-sep" aria-hidden="true">/</span>
+      <span>{year}</span>
+    </div>
+    <a class="tags-link" href={withBase("/tags/")}>Etiketler</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 2px solid hsl(var(--theme-text));
+    padding-top: 0;
+    color: hsl(var(--theme-text) / 0.72);
+    transition: border-color 0.35s ease;
+  }
+  .social-links {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .social-links a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    padding: 20px 14px;
+    border-right: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    color: hsl(var(--theme-text-muted));
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+  .social-links a:last-child {
+    border-right: 0;
+  }
+  .social-links a:hover {
+    color: hsl(var(--theme-accent));
+    background: hsl(var(--theme-text) / 0.035);
+  }
+  .social-links :global(.social-icon) {
+    width: 17px;
+    height: 17px;
+  }
+  .social-arrow {
+    color: hsl(var(--theme-text) / 0.35);
+    transition: transform 0.2s ease;
+  }
+  .social-links a:hover .social-arrow {
+    transform: translate(2px, -2px);
+  }
+  .footer-meta {
+    padding-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 550;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .site-footer .left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .footer-note {
+    color: hsl(var(--theme-accent));
+    font-family: var(--font-serif);
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .footer-sep {
+    color: var(--faint);
+  }
+  .tags-link {
+    color: hsl(var(--theme-text-muted));
+    transition: color 0.2s ease;
+  }
+  .tags-link:hover {
+    color: hsl(var(--theme-accent));
+  }
+
+  @media (max-width: 900px) {
+    .social-links {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .social-links a:nth-child(3n) {
+      border-right: 0;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .social-links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .social-links a:nth-child(3n) {
+      border-right: 1px solid var(--hairline);
+    }
+    .social-links a:nth-child(2n) {
+      border-right: 0;
+    }
+    .footer-meta {
+      font-size: 11.5px;
+      gap: 12px;
+    }
+  }
+</style>

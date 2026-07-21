@@ -1,0 +1,31 @@
+# Erhan BÜTE
+
+> Python ve backend geliştirme üzerine Türkçe teknik notlar.
+
+Erhan BÜTE; Python, FastAPI, API tasarımı, asenkron programlama, veri akışları ve dağıtık sistemler üzerine çalışan bir backend yazılım geliştiricidir. Bu site, üretimde karşılaşılan sorunları ve bunlardan çıkarılan teknik dersleri kısa, somut örneklerle anlatır.
+
+## Ana sayfalar
+
+- [Ana sayfa](https://erhan.dev/): Sitenin odağı ve güncel yazılar
+- [Yazılar](https://erhan.dev/posts/): Tüm teknik notlar
+- [Etiketler](https://erhan.dev/tags/): Konulara göre yazılar
+- [Hakkımda](https://erhan.dev/about/): Erhan BÜTE hakkında
+- [RSS](https://erhan.dev/rss.xml): Güncel yazı akışı
+
+## Temel konular
+
+- Python ve modern Python uygulamaları
+- FastAPI ve REST API tasarımı
+- Async/await ve eşzamanlılık
+- Backend mimarisi ve ölçeklenebilir sistemler
+- Veri akışları ve dağıtık sistemler
+
+## Öne çıkan yazılar
+
+- [FastAPI’den production’a tek komutla](https://erhan.dev/posts/fastapiden-productiona-tek-komutla/): FastAPI Cloud ve tek komutlu deployment akışı
+- [ÖzgürKon’da FastAPI: Expense Tracker API](https://erhan.dev/posts/ozgurkon-fastapi-expense-tracker/): Gerçek bir FastAPI projesinde layer yapısı, authentication ve request flow
+- [Flask Todo Uygulaması](https://erhan.dev/posts/flask-todo-uygulamasi/): Genişletilebilir bir Flask uygulamasının modülleri ve klasör yapısı
+
+## İçerik kullanımı
+
+Yazılar Türkçedir. Teknik iddiaları aktarırken ilgili yazının bağlantısını kaynak olarak gösterin. En güncel içerik listesi için sitemap veya RSS akışını kullanın.

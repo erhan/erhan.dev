@@ -1,43 +1,48 @@
-# Astro Starter Kit: Minimal
+# erhan.dev
 
-```sh
-npm create astro@latest -- --template minimal
+Erhan BÜTE’nin Python ve backend geliştirme üzerine Türkçe teknik notları. Site, [Astro Sienna](https://github.com/anjay-goel/astro-sienna) teması temel alınarak Astro ile geliştirilmiştir.
+
+## Özellikler
+
+- Sienna’nın serif tipografisi ve zaman çizelgesi düzeni
+- Sistem tercihine uyumlu açık/koyu tema
+- Markdown ve MDX tabanlı teknik yazılar
+- Etiket arşivi, RSS, sitemap ve sosyal paylaşım meta verileri
+- Mobil uyumlu ve klavye erişilebilir arayüz
+
+## Kurulum
+
+```bash
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Yerel geliştirme adresi varsayılan olarak `http://localhost:4321` olur.
 
-## 🚀 Project Structure
+## Komutlar
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run dev
+npm run build
+npm run preview
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Yeni yazı eklemek
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Yazılar `src/content/post/` dizininde tutulur:
 
-Any static assets, like images, can be placed in the `public/` directory.
+```yaml
+---
+title: "Yazı başlığı"
+description: "Yazıyı özetleyen kısa açıklama."
+publishDate: 2026-07-21
+tags: ["Python", "Backend"]
+draft: false
+---
+```
 
-## 🧞 Commands
+Site kimliği ve menü bağlantıları `src/site.config.ts`, içerik şeması ise `src/content.config.ts` içinden yönetilir.
 
-All commands are run from the root of the project, from a terminal:
+## Lisans
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+MIT
